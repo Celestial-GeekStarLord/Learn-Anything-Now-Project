@@ -1,44 +1,39 @@
 "use client";
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { analyzeUser } from '@/lib/ap_clienti';
 
-export default function UserCharacterizationForm() {
-  const [formData, setFormData] = useState({
-    learningGoal: '',
-    experienceLevel: 'Beginner',
-    interests: '',
-  });
+export default function CharacterForm({ onResults }: { onResults: (data: any) => void }) {
+  const [bio, setBio] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    // This will eventually call your FastAPI backend
-    console.log("Analyzing user characterization:", formData);
+  const handleAnalyze = async () => {
+    setLoading(true);
+    try {
+      const data = await analyzeUser(bio); // Sending raw text to Python
+      onResults(data);
+    } catch (error) {
+      console.error("Analysis failed", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="p-6 bg-white rounded-lg shadow-md max-w-md mx-auto">
-      <h2 className="text-xl font-bold mb-4">Tell us about yourself</h2>
-      
-      <label className="block mb-2">What do you want to learn?</label>
-      <input 
-        type="text" 
-        className="w-full p-2 border rounded mb-4"
-        placeholder="e.g. Robotics, NLP, React..."
-        onChange={(e) => setFormData({...formData, learningGoal: e.target.value})}
+    <div className="flex flex-col gap-4 p-6 bg-slate-900 rounded-xl border border-slate-700">
+      <h2 className="text-xl font-semibold text-white">Describe your goals</h2>
+      <textarea
+        className="w-full h-40 p-4 bg-slate-800 text-white rounded-lg border border-slate-600 focus:ring-2 focus:ring-blue-500 outline-none"
+        placeholder="e.g., I am a computer engineering student interested in Robotics. I want to learn about ROS2 and object detection using YOLO..."
+        value={bio}
+        onChange={(e) => setBio(e.target.value)}
       />
-
-      <label className="block mb-2">Your current level:</label>
-      <select 
-        className="w-full p-2 border rounded mb-4"
-        onChange={(e) => setFormData({...formData, experienceLevel: e.target.value})}
+      <button
+        onClick={handleAnalyze}
+        disabled={loading}
+        className="py-3 px-6 bg-blue-600 hover:bg-blue-500 text-white font-medium rounded-lg transition-all"
       >
-        <option>Beginner</option>
-        <option>Intermediate</option>
-        <option>Advanced</option>
-      </select>
-
-      <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">
-        Generate Learning Path
+        {loading ? "Analyzing..." : "Generate Learning Path"}
       </button>
-    </form>
+    </div>
   );
 }
