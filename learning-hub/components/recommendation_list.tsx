@@ -1,17 +1,31 @@
 export default function RecommendationList({ data }: { data: any }) {
-  if (!data) return null;
+  if (!data || !data.recommendations) return null;
 
   return (
-    <div className="mt-8 p-6 bg-slate-800 rounded-lg">
-      <h3 className="text-blue-400 font-bold uppercase tracking-wider text-sm">Analysis Results</h3>
-      <div className="flex flex-wrap gap-2 my-4">
-        {data.detected_keywords.map((kw: string) => (
-          <span key={kw} className="px-3 py-1 bg-blue-900/50 border border-blue-700 text-blue-200 rounded-full text-sm">
-            #{kw}
-          </span>
+    <div className="space-y-6">
+      <div className="p-4 bg-slate-800 rounded-lg border border-blue-500/30">
+        <h3 className="text-blue-400 font-bold text-sm uppercase">Persona Identified</h3>
+        <p className="text-slate-300">Level: <span className="text-white font-mono">{data.suggested_level}</span></p>
+      </div>
+
+      <div className="grid gap-4">
+        {data.recommendations.map((res: any, index: number) => (
+          <a 
+            key={index} 
+            href={res.url} 
+            target="_blank" 
+            className="block p-4 bg-slate-900 border border-slate-700 rounded-xl hover:border-blue-500 transition-colors group"
+          >
+            <div className="flex justify-between items-start">
+              <div>
+                <span className="text-xs font-bold text-blue-500 mb-1 block">#{res.tag}</span>
+                <h4 className="text-white font-medium group-hover:text-blue-400">{res.title}</h4>
+              </div>
+              <span className="text-xs bg-slate-800 px-2 py-1 rounded text-slate-400">{res.type}</span>
+            </div>
+          </a>
         ))}
       </div>
-      <p className="text-slate-300">Target Level: <strong>{data.suggested_level}</strong></p>
     </div>
   );
 }
