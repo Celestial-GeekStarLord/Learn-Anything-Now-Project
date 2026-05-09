@@ -49,7 +49,7 @@ export default function CharacterForm({ onResults }: { onResults: (data: any) =>
       {/* Text Area Input */}
       <textarea
         className="w-full h-40 p-4 bg-slate-800 text-white rounded-lg border border-slate-600 focus:ring-2 focus:ring-blue-500 outline-none"
-        placeholder="e.g., I am a computer engineering student interested in Robotics..."
+        placeholder="e.g., I am an engineering student interested in ..."
         value={bio}
         onChange={(e) => setBio(e.target.value)}
       />
