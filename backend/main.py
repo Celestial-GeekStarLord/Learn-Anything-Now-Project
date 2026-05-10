@@ -9,7 +9,7 @@ from services.pdf_processor import extract_text_from_pdf
 
 app = FastAPI()
 
-# Allow Next.js to talk to FastAPI
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
