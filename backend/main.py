@@ -26,16 +26,16 @@ class UserInput(BaseModel):
 async def extract_characterization(data: UserInput):
     doc = nlp(data.text)
     
-    # Improved keyword extraction logic
+    
     keywords = list(set([token.lemma_.lower() for token in doc 
                         if token.pos_ in ["NOUN", "PROPN"] and not token.is_stop]))
     
-    # Determine level from characterization text
+   
     level = "Beginner"
     if any(word in data.text.lower() for word in ["expert", "advanced", "intermediate"]):
         level = "Intermediate" if "intermediate" in data.text.lower() else "Advanced"
 
-    # Fetch resources based on identified 'Interests'
+    
     links = await fetch_resources(keywords, level)
 
 @app.post("/analyze-file")
