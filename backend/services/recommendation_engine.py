@@ -11,7 +11,7 @@ async def fetch_resources(keywords, level):
     ]
 
     for query in keywords:
-        # Ignore noisy keywords
+        
         if len(query) < 3 or query.isdigit():
             continue
 
@@ -24,5 +24,5 @@ async def fetch_resources(keywords, level):
                 "tag": query
             })
             
-    return search_results # Keep it clean
+    return search_results 
 
