@@ -17,7 +17,7 @@ export default function Home() {
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {/* Section for inputting background/interests */}
+          {}
           <section>
             <CharacterForm onResults={(data) => setAnalysisData(data)} />
           </section>
